@@ -3,8 +3,6 @@
 ///////     LIST OF OBJECTIVES       ///////
 ///////////////////////////////////////////
 
-* console.log the current time on page load
-* console.log the current time every second
 * Display the current time every second
 * Display the current time, padded with zeros to be exactly two digits long, every second
 * console.log the percentage of a minute that the current seconds represents (e.g., if 30 seconds have elapsed, console.log 0.5)
@@ -25,12 +23,12 @@ function clock() {
     var hrs = timeRaw.getHours();
     var mins = timeRaw.getMinutes();
     var secs = timeRaw.getSeconds();
-    var timeString =`${hrs}:${mins}:${secs}`;
-    return timeString
-  }
+    var timeString =`${hrs}${mins}${secs}`;
+    console.log(timeString);
+  };
 
-function logClock() {
-    console.log(clock());
-}
+function clockTick() { 
+    var tick = setInterval(clock, 1000);
+};
 
-logClock();
+clockTick();
