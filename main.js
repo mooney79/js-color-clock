@@ -3,8 +3,6 @@
 ///////     LIST OF OBJECTIVES       ///////
 ///////////////////////////////////////////
 
-* console.log the percentage of a minute that the current seconds represents (e.g., if 30 seconds have elapsed, console.log 0.5)
-* Using the percent above, dynamically modify the length of the timer bar
 * console.log a hexidecimal color that is based on the current second, every second
 * Dynamically update the background color of the page using the hexidecimal color
 * Display the generated color's hex value on hover
@@ -12,12 +10,44 @@
 
 */
 
-// function initializeTimer(){  //go into body tag, add onload="initializeTimer()" <-- Can I do this with JS?
-//     console.log();
-// };
-
 function clock() { //Queries the time and returns undefined
     var timeRaw = new Date();
+
+    ///BEGIN EXPERIMENTAL STUFF
+    
+    let hexColor = timeRaw.getTime();
+    let hexPull = hexColor.toString(16);
+    let hexArr = hexPull.split('');
+    for (i = (hexArr.length - 6); i > 0; i--){
+        hexArr.shift();
+    };
+    hexPull = hexArr.join('');
+    hexPull = '#'+hexPull;
+    //console.log(hexArr);
+    console.log(hexPull);
+
+
+
+    // find length
+    // subtract 6
+    // that number is how many shifts happen on the thing
+   /*
+    var str = "Hello world That is reallly neat!";
+    var res = str.substring(0, 5);//get first 5 chars -- needs to be last 6
+    So grab tinmeString (string version), do some string
+    interpolation to get a #000000.
+    Then select the background element
+    change style.backgroundColor (or however)
+    Function the above, call it in clock, badabing badaboom.
+
+    Create an event listener for onHover on the Clock face.  Change text to my Hex value
+    when that's the case
+
+    done?
+
+    */
+    ///END EXPERIMENTAL STUFF
+
     var hrs = timeRaw.getHours();
     hrs = formatHours(hrs);
     var mins = timeRaw.getMinutes();
@@ -27,8 +57,8 @@ function clock() { //Queries the time and returns undefined
     var timeString =`${hrs}:${mins}:${secs}`;
     const $element = document.querySelector('.clock-display');
     $element.textContent = timeString;
-    //console.log(timeString);
-    console.log(parseInt(secs)/60);
+    console.log(timeString);
+    console.log((parseInt(secs)/60)*100+'%');
     barUpdate(parseInt(secs));
   };
 
@@ -77,24 +107,12 @@ function barUpdate(num){
     const $barElement = document.querySelector(".clock-progress-bar");
     $barElement.style.color = 'red';
     let pctWidth = (num/60)*14;
-    console.log(pctWidth);  
+    //console.log(pctWidth);  
     $barElement.style.width = `${pctWidth}rem`;
 };
 
+
+
+/////////// BEGIN THE CLOCK /////////////////////
 clock();         //Starts the clock on load
 clockTick();    //Updates the clock display every second
-
-
-/* So... next step is to display the current time each time clock runs.  For this, I need
-to fetch the data (done), and then update the HTML to display the new value.  First, I guess
-I locate the old values.
-Next, I change the textContents.
-Done?
-query "clock display", then alter textContents.  How?
-
-
-// const $element = document.querySelector('div');
-$element.textContent = 'Changing things up';
-
-
-*/
