@@ -1,70 +1,42 @@
-/*
-////////////////////////////////////////////
-///////     LIST OF OBJECTIVES       ///////
-///////////////////////////////////////////
-
-* console.log a hexidecimal color that is based on the current second, every second
-* Dynamically update the background color of the page using the hexidecimal color
-* Display the generated color's hex value on hover
-* Mission Accomplished!
-
-*/
+// Convert long number (param from getTime) to 6-digit Hex String with #
+// Uses the last six digits of parameter to generate hex code
+function toHexString(num) {  
+    const timeStamp = num;
+    let hexPull = timeStamp.toString(16);
+    let hexArray = hexPull.split('');
+    for (i = (hexArray.length - 6); i > 0; i--){
+        hexArray.shift();
+    };
+    hexPull = hexArray.join('');
+    hexPull = '#'+hexPull.toUpperCase();
+    console.log(hexPull);
+    return hexPull; 
+}
 
 function clock() { //Queries the time and returns undefined
     var timeRaw = new Date();
-
-    ///BEGIN EXPERIMENTAL STUFF
-    
-    let hexColor = timeRaw.getTime();
-    let hexPull = hexColor.toString(16);
-    let hexArr = hexPull.split('');
-    for (i = (hexArr.length - 6); i > 0; i--){
-        hexArr.shift();
-    };
-    hexPull = hexArr.join('');
-    hexPull = '#'+hexPull;
-    //console.log(hexArr);
-    console.log(hexPull);
-
-
-
-    // find length
-    // subtract 6
-    // that number is how many shifts happen on the thing
-   /*
-    var str = "Hello world That is reallly neat!";
-    var res = str.substring(0, 5);//get first 5 chars -- needs to be last 6
-    So grab tinmeString (string version), do some string
-    interpolation to get a #000000.
-    Then select the background element
-    change style.backgroundColor (or however)
-    Function the above, call it in clock, badabing badaboom.
-
-    Create an event listener for onHover on the Clock face.  Change text to my Hex value
-    when that's the case
-
-    done?
-
-    */
-    ///END EXPERIMENTAL STUFF
-
-    var hrs = timeRaw.getHours();
-    hrs = formatHours(hrs);
-    var mins = timeRaw.getMinutes();
-    mins = formatMinutes(mins);
-    var secs = timeRaw.getSeconds();
-    secs = formatSeconds(secs);
-    var timeString =`${hrs}:${mins}:${secs}`;
+    let hexCode = toHexString(timeRaw.getTime());
+    const $bgColor = document.querySelector(".clock");
+    $bgColor.style.backgroundColor = `${hexCode}`;
+    var hrs = formatHours(timeRaw.getHours());
+    var mins = formatMinutes(timeRaw.getMinutes());
+    var secs = formatSeconds(timeRaw.getSeconds());
     const $element = document.querySelector('.clock-display');
-    $element.textContent = timeString;
-    console.log(timeString);
+    $element.textContent = `${hrs}:${mins}:${secs}`;
+    console.log(`${hrs}:${mins}:${secs}`);
     console.log((parseInt(secs)/60)*100+'%');
     barUpdate(parseInt(secs));
-  };
+    $element.onmouseover = function(){
+      $element.textContent = hexCode;
+    }
+};
+
 
 function clockTick() { //Re-runs clock every second
     var tick = setInterval(clock, 1000);
-};
+//    document.querySelector(".clock-display").onmouseenter = clearInterval(tick);
+//    document.querySelector(".clock-display").onmouseleave = setInterval(clock, 1000);
+ };
 
 ////////////////////////////////////////////
 /////// TIMER FORMATTING FUNCTIONS ////////
@@ -72,8 +44,7 @@ function clockTick() { //Re-runs clock every second
 /* These three functions check the data
 and if it a number below 10 (ie, single digit),
 tack a 0 on the front and return that value 
-as a string. */
-
+as a string. Hours are in military time.*/
 function formatHours(hrs){
     let hrsUpdated = hrs;
     if (hrs < 10) {
@@ -97,19 +68,34 @@ function formatSeconds(secs){
     }
     return secsUpdated;
 }
-
 //////////// END FORMATTING FUNCTIONS///////////
 
 
-//////////// PROGRESS BAR WIDTH ///////////
-
+// Turns the current seconds on the clock (num) into a percentage
+// and returns undefined
 function barUpdate(num){
     const $barElement = document.querySelector(".clock-progress-bar");
-    $barElement.style.color = 'red';
     let pctWidth = (num/60)*14;
-    //console.log(pctWidth);  
     $barElement.style.width = `${pctWidth}rem`;
 };
+
+/////// COLLECTION OF BAD CODE ATTEMPTING TO GET clearInterval() TO WORK
+/////// LIKE I THINK IT SHOULD
+//document.querySelector(".clock-display").onmouseover = clearInterval(tick);
+//document.querySelector(".clock-display").onmouseout = clockTick();
+//
+//function hover() {
+//   clearInterval(tick);
+// };
+//  let pause = false;
+//  document.querySelector(".clock-display").onmouseover = function (){pause=true;};
+//  if (pause=true){
+//     clearInterval(tick);
+//  } else {
+//     setInterval(clock, 1000);
+//  }
+// then mouseout to set back to false?
+
 
 
 
