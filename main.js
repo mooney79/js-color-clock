@@ -34,6 +34,9 @@ function clock() { //Queries the time and returns undefined
 
 function clockTick() { //Re-runs clock every second
     var tick = setInterval(clock, 1000);
+    let pause = document.querySelector(".clock-display");
+ //   pause.addEventListener('mouseover', clearInterval(tick));
+ //   pause.addEventListener('mouseout', clockTick());
 //    document.querySelector(".clock-display").onmouseenter = clearInterval(tick);
 //    document.querySelector(".clock-display").onmouseleave = setInterval(clock, 1000);
  };
