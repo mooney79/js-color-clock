@@ -22,19 +22,47 @@ function clock() { //Queries the time and returns undefined
     var mins = formatMinutes(timeRaw.getMinutes());
     var secs = formatSeconds(timeRaw.getSeconds());
     const $element = document.querySelector('.clock-display');
-    $element.textContent = `${hrs}:${mins}:${secs}`;
+    if (isHovering){
+
+            $element.textContent = hexCode;
+
+        
+    } else {
+        $element.textContent = `${hrs}:${mins}:${secs}`;
+    };
+    
     console.log(`${hrs}:${mins}:${secs}`);
     console.log((parseInt(secs)/60)*100+'%');
     barUpdate(parseInt(secs));
-    $element.onmouseover = function(){
-      $element.textContent = hexCode;
-    }
+    
 };
 
 
 function clockTick() { //Re-runs clock every second
     var tick = setInterval(clock, 1000);
-    let pause = document.querySelector(".clock-display");
+
+    
+    /*
+    if (pause.matches(':hover')){
+      clearInterval(tick);
+
+      /////////TERNIARY,a one-lone if/else statement
+      //////// can pass in null as third argument if no else
+
+      index === -1 ? index = 0: index++
+      
+      if (index === colors.length -1) { 
+          index = 0;
+      } else {
+          index = index + 1
+      }
+    }
+    */
+
+    //But then... how to reenable when mouse leaves?
+
+    
+    
  //   pause.addEventListener('mouseover', clearInterval(tick));
  //   pause.addEventListener('mouseout', clockTick());
 //    document.querySelector(".clock-display").onmouseenter = clearInterval(tick);
@@ -55,6 +83,10 @@ function formatHours(hrs){
     }
     return hrsUpdated;
 }
+
+// Classroom version
+// hours = ('0' + now.getHours()).slice(-2);
+// pre-pads, takes last two.  Slice w/ neg number wraps back
 
 function formatMinutes(mins){
     let minsUpdated = mins;
@@ -80,6 +112,7 @@ function barUpdate(num){
     const $barElement = document.querySelector(".clock-progress-bar");
     let pctWidth = (num/60)*14;
     $barElement.style.width = `${pctWidth}rem`;
+    //Could replace pctWidth here with the formula using string interpolation
 };
 
 /////// COLLECTION OF BAD CODE ATTEMPTING TO GET clearInterval() TO WORK
@@ -103,5 +136,34 @@ function barUpdate(num){
 
 
 /////////// BEGIN THE CLOCK /////////////////////
+const $clock = document.querySelector(".clock");;
+let isHovering = false;
+$clock.addEventListener('mouseover', function(){
+    isHovering=true;
+});
+$clock.addEventListener('mouseout', function() {
+    ishovering=false;
+});
+
 clock();         //Starts the clock on load
 clockTick();    //Updates the clock display every second
+
+/*
+//in root
+let isHovering = false;
+$clock.addEventListener('mouseover', function(){
+    isHovering=true;
+});
+$clock.addEventListner('mouseout', function() {
+    ishovering=false;
+});
+
+//in function
+if (isHovering){
+    //Do hexCode
+} else {
+    //Show time
+};
+
+
+*/
